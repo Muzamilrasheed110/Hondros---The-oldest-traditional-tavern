@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Hondros - The oldest traditional tavern in Paphos, serving legendary Cypriot meze and charcoal-grilled meats since 1953. Warm family-run spot near the harbour.">
+  <title>Hondros • Oldest Traditional Tavern in Paphos | Since 1953</title>
+  <!-- SEO & Social -->
+  <meta property="og:title" content="Hondros - Traditional Cypriot Tavern">
+  <meta property="og:description" content="Where Cyprus Flavors Have Been Perfecting Tradition Since 1953.">
+  <meta property="og:image" content="assets/images/logo.png">
+  <meta name="theme-color" content="#C62828">
+  <!-- Google Fonts: elegant combination -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Loading animation overlay -->
+  <div id="loader" class="loader-overlay" aria-hidden="true">
+    <div class="loader-spinner"></div>
+  </div>
+
+  <!-- Sticky Navigation -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#home" class="logo" aria-label="Hondros Home">
+        <img src="assets/images/logo.png" alt="Hondros Tavern Logo" width="65" height="65">
+        <span class="logo-text">HONDROS</span>
+      </a>
+      <nav class="nav-menu" id="navMenu">
+        <ul>
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#menu" class="nav-link">Menu</a></li>
+          <li><a href="#categories" class="nav-link">Categories</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li><a href="#location" class="nav-link">Location</a></li>
+          <li><a href="#order-now" class="nav-link nav-order-btn">Order For Dine‑in Now</a></li>
+        </ul>
+      </nav>
+      <div class="social-header">
+        <a href="#" aria-label="Facebook" class="social-icon-header"></a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content container">
+        <h1 class="hero-title">HONDROS</h1>
+        <p class="hero-tagline">Where Cyprus Flavors Have Been Perfecting Tradition Since 1953.</p>
+        <p class="hero-desc">Paphos's oldest traditional tavern, serving legendary meze and charcoal-grilled meats near the harbour. Family-run warmth under a vine-covered pergola.</p>
+        <div class="hero-buttons">
+          <a href="#menu" class="btn btn-primary">View Menu</a>
+          <a href="#order-now" class="btn btn-outline">Order Now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features container" id="features">
+      <div class="feature-card"><span class="feature-icon">🥬</span><h3>Fresh Food</h3><p>Locally sourced daily</p></div>
+      <div class="feature-card"><span class="feature-icon">⭐</span><h3>Premium Quality</h3><p>Since 1953</p></div>
+      <div class="feature-card"><span class="feature-icon">💰</span><h3>Affordable Prices</h3><p>Great value</p></div>
+      <div class="feature-card"><span class="feature-icon">👨‍👩‍👧‍👦</span><h3>Family Environment</h3><p>Warm welcome</p></div>
+    </section>
+
+    <!-- Menu & Categories Section -->
+    <section id="menu" class="menu-section container">
+      <h2>Our Menu</h2>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search dishes, categories..." aria-label="Search menu">
+      </div>
+      <!-- Category buttons -->
+      <div id="categories" class="category-filters">
+        <button class="cat-btn active" data-category="all">All</button>
+      </div>
+      <!-- Products grid -->
+      <div id="productGrid" class="product-grid"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section container">
+      <h2>Our Story</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p><strong>Hondros</strong> opened in 1953 near Paphos harbour. We remain family-run, devoted to Cypriot tradition, warm hospitality, and charcoal-grilled perfection.</p>
+          <ul>
+            <li>✅ Fresh ingredients daily</li>
+            <li>✅ Experienced chefs since generations</li>
+            <li>✅ Customer satisfaction is our legacy</li>
+          </ul>
+        </div>
+        <div class="about-image">
+          <img src="assets/images/menu.jpg" alt="Restaurant atmosphere" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery-section container" id="gallery">
+      <h2>Gallery</h2>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+
+    <!-- Contact & Location -->
+    <section id="contact" class="contact-section container">
+      <h2>Contact & Location</h2>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <h3>📍 Address</h3>
+          <p>QC56+4Q4, Paphos 8040, Cyprus</p>
+          <a href="#" class="btn btn-small" id="mapLink">Google Maps</a>
+        </div>
+        <div class="contact-card">
+          <h3>📞 Phone</h3>
+          <p>Telephone: <a href="#" id="tel:+35726934256">Chat now</a></p>
+          <p>WhatsApp: <a href="#" id="whatsappContact">Order now</a></p>
+          <p>Facebook: <a href="#" id="https://www.facebook.com/HondrosTaverna</p>">Contact Now</a></p>
+          <p>Yahoo: <a href="#" id="info@hondros.com">Mail Me Now</a></p>
+        </div>
+        <div class="contact-card">
+          <h3>🕒 Hours</h3>
+          <p>Monday – Sunday</p>
+          <p>12:00 PM – 10:30 PM</p>
+          <a href="#" class="btn btn-small" id="whatsappContact">Dine‑in Only</a>
+          
+        </div>
+      </div>
+      <div id="location" class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.8!2d32.42!3d34.77!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDQ2JzEyLjAiTiAzMsKwMjUnMTIuMCJF!5e0!3m2!1sen!2s!4v1690000000000" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" title="Hondros location"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>HONDROS</h3>
+        <p>Oldest traditional tavern since 1953</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <ul id="footerCategories"></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>+35726934256</p>
+        <p>info@hondros.com.cy</p>
+        <p>https://www.facebook.com/HondrosTaverna</p>
+      </div>
+    </div>
+    <div class="copyright container">
+      <p>© 2026 Hondros. Designed by Hafiz Muzamil Raheed</p>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
