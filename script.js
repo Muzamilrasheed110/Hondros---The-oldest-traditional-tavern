@@ -1,16 +1,51 @@
-// script.js
+// ============================================
+// HONDROS RESTAURANT - COMPLETE JAVASCRIPT
+// ============================================
+
 document.addEventListener('DOMContentLoaded', () => {
-  // --- PRODUCT DATA (editable array) ---
+  
+  // ============================================
+  // EMERGENCY LOADER FIX (TOP PRIORITY)
+  // ============================================
+  const loader = document.getElementById('loader');
+  
+  function hideLoader() {
+    if (loader) {
+      loader.classList.add('loader-hidden');
+      setTimeout(() => {
+        if (loader.parentNode) {
+          loader.remove();
+        }
+      }, 500);
+    }
+  }
+  
+  // Normal page load
+  window.addEventListener('load', () => {
+    setTimeout(hideLoader, 800);
+  });
+  
+  // Emergency fallback - 4 seconds max
+  setTimeout(hideLoader, 4000);
+  
+  // Click to dismiss loader
+  if (loader) {
+    loader.addEventListener('click', hideLoader);
+  }
+
+  // ============================================
+  // PRODUCT DATA (editable array)
+  // ============================================
   const products = [
     { name: "Soup of the Day", category: "Freshly Made Soups", price: 9.50, desc: "Freshly prepared homemade soup using seasonal ingredients.", availability: "Available", rating: 4.8 },
     { name: "Grilled Vegetables", category: "Starters", price: 8.50, desc: "Fresh seasonal vegetables grilled with herbs and olive oil.", availability: "Available", rating: 4.6 },
     { name: "Spinach Pie", category: "Starters", price: 10.50, desc: "Traditional flaky pastry with spinach, herbs and cheese.", availability: "Chef's Special", rating: 4.9 },
     { name: "Grilled Mushrooms", category: "Starters", price: 9.50, desc: "Juicy mushrooms with garlic butter.", availability: "Available", rating: 4.7 },
-    { name: "Grilled Feta and Tomato", category: "Starters", price: 10.50, desc: "Creamy feta baked with tomatoes.", availability: "Available", rating: 4.8 },
+    { name: "Grilled Feta & Tomato", category: "Starters", price: 10.50, desc: "Creamy feta baked with tomatoes.", availability: "Available", rating: 4.8 },
     { name: "Scordalia", category: "Dips", price: 4.90, desc: "Traditional garlic potato dip.", availability: "Available", rating: 4.5 },
     { name: "Tahini", category: "Dips", price: 4.90, desc: "Smooth sesame seed dip.", availability: "Available", rating: 4.4 },
     { name: "Houmous", category: "Dips", price: 5.50, desc: "Creamy chickpea dip with tahini.", availability: "Available", rating: 4.8 },
-    { name: "Spaghetti Tomato and Basil", category: "Pasta", price: 12.50, desc: "Classic pasta with fresh tomato sauce.", availability: "Available", rating: 4.8 },
+    { name: "Spaghetti Tomato & Basil", category: "Pasta", price: 12.50, desc: "Classic pasta with fresh tomato sauce.", availability: "Available", rating: 4.8 },
     { name: "Spaghetti Bolognaise", category: "Pasta", price: 13.50, desc: "Rich slow-cooked beef sauce.", availability: "Popular", rating: 4.9 },
     { name: "Greek Salad", category: "Salads", price: 9.50, desc: "Cucumber, tomato, olives, feta.", availability: "Available", rating: 4.7 },
     { name: "Large Greek Salad", category: "Salads", price: 12.50, desc: "Extra-large sharing portion.", availability: "Available", rating: 4.8 },
@@ -40,24 +75,53 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "Thisbe", category: "Wines", price: 22.00, desc: "Premium house selection.", availability: "Premium", rating: 4.9 }
   ];
 
+  // ============================================
+  // CONFIGURATION
+  // ============================================
   const currencySymbol = "€";
-  const whatsappNumber = "+923334751412"; // restaurant WhatsApp
+  const whatsappNumber = "+35726934256"; // Restaurant WhatsApp
   const restaurantName = "Hondros - The oldest traditional tavern";
 
-  // DOM elements
+  // ============================================
+  // DOM ELEMENTS (with null checks)
+  // ============================================
   const productGrid = document.getElementById('productGrid');
   const categoryContainer = document.querySelector('.category-filters');
   const searchInput = document.getElementById('searchInput');
   const hamburger = document.getElementById('hamburger');
   const navMenu = document.getElementById('navMenu');
   const backToTop = document.getElementById('backToTop');
-  const loader = document.getElementById('loader');
   const galleryGrid = document.getElementById('galleryGrid');
   const footerCategories = document.getElementById('footerCategories');
+  const whatsappContact = document.getElementById('whatsappContact');
+  const mapLink = document.getElementById('mapLink');
 
+  // ============================================
+  // HELPER FUNCTIONS
+  // ============================================
+  
   // Extract unique categories
   const categories = [...new Set(products.map(p => p.category))];
 
+  // Image helper - clean filename
+  function getProductImage(name) {
+    const sanitizedName = name.replace(/[^a-zA-Z0-9\s-]/g, '').trim();
+    return `assets/images/${sanitizedName}.jpg`;
+  }
+
+  // Debounce for search performance
+  function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+  }
+
+  // ============================================
+  // RENDER FUNCTIONS
+  // ============================================
+  
   // Build category buttons
   function renderCategories() {
     if (!categoryContainer) return;
@@ -69,36 +133,23 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.textContent = cat;
       categoryContainer.appendChild(btn);
     });
-    // footer categories
+    
+    // Footer categories
     if (footerCategories) {
-      footerCategories.innerHTML = categories.slice(0,5).map(c => `<li><a href="#">${c}</a></li>`).join('');
+      footerCategories.innerHTML = categories.slice(0, 5).map(c => `<li><a href="#menu">${c}</a></li>`).join('');
     }
-  }
-
-  // Image helper - FIXED: Added file extension logic
-  function getProductImage(name) {
-    // Sanitize the filename
-    const sanitizedName = name.replace(/[^a-zA-Z0-9\s-]/g, '').trim();
-    return `assets/images/${sanitizedName}.jpg`;
-  }
-
-  // Debounce function for search performance
-  function debounce(func, delay) {
-    let timeoutId;
-    return function(...args) {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func.apply(this, args), delay);
-    };
   }
 
   // Render products
   function renderProducts(filteredProducts) {
     if (!productGrid) return;
     productGrid.innerHTML = '';
+    
     if (filteredProducts.length === 0) {
-      productGrid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No dishes found.</p>';
+      productGrid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:40px; color:#888;">🍽️ No dishes found. Try a different search!</p>';
       return;
     }
+    
     filteredProducts.forEach(prod => {
       const card = document.createElement('div');
       card.className = 'product-card';
@@ -118,6 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="whatsapp-btn">ORDER VIA WHATSAPP</button>
         </div>
       `;
+      
+      // Quantity controls
       const minusBtn = card.querySelector('.minus');
       const plusBtn = card.querySelector('.plus');
       const qtySpan = card.querySelector('.qty-value');
@@ -129,28 +182,35 @@ document.addEventListener('DOMContentLoaded', () => {
           qtySpan.textContent = quantity; 
         } 
       });
+      
       plusBtn.addEventListener('click', () => { 
         quantity++; 
         qtySpan.textContent = quantity; 
       });
 
+      // WhatsApp order button
       const orderBtn = card.querySelector('.whatsapp-btn');
       orderBtn.addEventListener('click', () => {
         const total = (prod.price * quantity).toFixed(2);
-        const message = `Hello, I would like to place a dine-in order.%0A%0A*Restaurant:* ${restaurantName}%0A*Table Number:*%0A%0A*Product:* ${prod.name}%0A*Price:* ${currencySymbol}${prod.price}%0A*Quantity:* ${quantity}%0A*Total:* ${currencySymbol}${total}%0A%0A*Customer Name:*%0A*Special Instructions:* ___________%0AThank you.`;
+        const message = `Hello,%20I%20would%20like%20to%20place%20a%20dine-in%20order.%0A%0A*Restaurant:*%20${encodeURIComponent(restaurantName)}%0A*Table%20Number:*%20______%0A%0A*Product:*%20${encodeURIComponent(prod.name)}%0A*Price:*%20${currencySymbol}${prod.price}%0A*Quantity:*%20${quantity}%0A*Total:*%20${currencySymbol}${total}%0A%0A*Customer%20Name:*%20______%0A*Special%20Instructions:*%20______%0A%0AThank%20you!%20🍽️`;
         window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
       });
+      
       productGrid.appendChild(card);
     });
   }
 
+  // Filter and search function
   function filterAndSearch() {
-    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+    const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
     const activeCat = document.querySelector('.cat-btn.active')?.dataset.category || 'all';
+    
     let filtered = products;
+    
     if (activeCat !== 'all') {
       filtered = filtered.filter(p => p.category === activeCat);
     }
+    
     if (searchTerm) {
       filtered = filtered.filter(p => 
         p.name.toLowerCase().includes(searchTerm) || 
@@ -158,9 +218,14 @@ document.addEventListener('DOMContentLoaded', () => {
         p.desc.toLowerCase().includes(searchTerm)
       );
     }
+    
     renderProducts(filtered);
   }
 
+  // ============================================
+  // EVENT LISTENERS
+  // ============================================
+  
   // Category click
   if (categoryContainer) {
     categoryContainer.addEventListener('click', (e) => {
@@ -172,19 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Search with debounce for better performance
+  // Search with debounce
   if (searchInput) {
     searchInput.addEventListener('input', debounce(filterAndSearch, 300));
-  }
-
-  // Gallery dynamic (load from assets/images/gallery/)
-  function loadGallery() {
-    if (!galleryGrid) return;
-    // FIXED: Added missing quote before gallery5.jpg
-    const galleryImages = ['gallery1.jpg', 'gallery2.jpg', 'gallery3.jpg', 'gallery4.jpg', 'gallery5.jpg', 'gallery6.jpg', 'gallery7.jpg', 'gallery8.jpg', 'gallery9.jpg', 'gallery10.jpg'];
-    galleryGrid.innerHTML = galleryImages.map(img => 
-      `<img src="assets/images/gallery/${img}" alt="Gallery Image" loading="lazy" onerror="this.style.display='none'">`
-    ).join('');
   }
 
   // Mobile menu
@@ -193,32 +248,90 @@ document.addEventListener('DOMContentLoaded', () => {
       navMenu.classList.toggle('open');
       hamburger.setAttribute('aria-expanded', navMenu.classList.contains('open'));
     });
+    
+    // Close menu when clicking a link
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
   }
 
-  // Back to top
+  // Back to top button
   if (backToTop) {
     window.addEventListener('scroll', () => {
       backToTop.style.display = window.scrollY > 500 ? 'block' : 'none';
     });
-    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  }
-
-  // Loader
-  if (loader) {
-    window.addEventListener('load', () => {
-      setTimeout(() => { 
-        loader.style.opacity = '0'; 
-        setTimeout(() => loader.remove(), 500); 
-      }, 600);
+    
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
-  // Set WhatsApp contact link
-  const whatsappContact = document.getElementById('whatsappContact');
-  if (whatsappContact) whatsappContact.href = `https://wa.me/${whatsappNumber}`;
+  // WhatsApp contact link
+  if (whatsappContact) {
+    whatsappContact.href = `https://wa.me/${whatsappNumber}`;
+  }
 
-  // Init
-  renderCategories();
-  renderProducts(products);
-  loadGallery();
+  // Google Maps link
+  if (mapLink) {
+    mapLink.href = `https://maps.google.com/?q=QC56+4Q4+Paphos+8040+Cyprus`;
+  }
+
+  // ============================================
+  // GALLERY LOADER
+  // ============================================
+  function loadGallery() {
+    if (!galleryGrid) return;
+    const galleryImages = [
+      'gallery1.jpg', 'gallery2.jpg', 'gallery3.jpg', 'gallery4.jpg', 
+      'gallery5.jpg', 'gallery6.jpg', 'gallery7.jpg', 'gallery8.jpg',
+      'gallery9.jpg', 'gallery10.jpg'
+    ];
+    galleryGrid.innerHTML = galleryImages.map(img => 
+      `<img src="assets/images/gallery/${img}" alt="Gallery" loading="lazy" onerror="this.style.display='none'">`
+    ).join('');
+  }
+
+  // ============================================
+  // ACTIVE NAV LINK HIGHLIGHT ON SCROLL
+  // ============================================
+  function highlightNavOnScroll() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  }
+
+  // ============================================
+  // INITIALIZATION
+  // ============================================
+  function init() {
+    renderCategories();
+    renderProducts(products);
+    loadGallery();
+    highlightNavOnScroll();
+    console.log('🍽️ Hondros Restaurant Website Ready!');
+    console.log('📱 WhatsApp:', whatsappNumber);
+    console.log('📍 Products loaded:', products.length);
+  }
+
+  // Start the app
+  init();
 });
